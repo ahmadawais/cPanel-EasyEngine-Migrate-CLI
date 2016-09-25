@@ -1,6 +1,9 @@
 #! /usr/bin/env bash
 # Migrate CLI
+#
 # Migrates cPanel websites to EasyEngine based VPS.
+#
+# Version: 1.0.0
 #
 # @param $backup_url URL to publically downloadable .tar.gz cPanel Backup file.
 # @param $backup_folder Backup is downloaded in this folder.
@@ -13,25 +16,25 @@ function start_cem() {
 
 	# $backup_url URL to publically downloadable .tar.gz cPanel Backup file.
 	echo "——————————————————————————————————"
-	echo "👉  Enter path to a publically downloadable cPanel backup [E.g. http://URL.com/backup.tar.gz]:"
+	echo "👉  Enter PATH to a publically downloadable cPanel backup [E.g. http://URL.com/backup.tar.gz]:"
 	echo "——————————————————————————————————"
 	read -r backup_url
 
 	# $backup_folder Backup is downloaded in this folder.
 	echo "——————————————————————————————————"
-	echo "👉  Enter folder name to download the backup [E.g. SiteName]:"
+	echo "👉  Enter FOLDER name to download the backup [E.g. SiteName]:"
 	echo "——————————————————————————————————"
 	read -r backup_folder
 
 	# $site_url The old site we are migrating.
 	echo "——————————————————————————————————"
-	echo "👉  Enter the site URL for the site are migrating in this format → [E.g. siteurl.com]:"
+	echo "👉  Enter the SITE URL for the site are migrating in this format → [E.g. siteurl.com]:"
 	echo "——————————————————————————————————"
 	read -r site_url
 
 	# $db_name Database name for the db that we need to import.
 	echo "——————————————————————————————————"
-	echo "👉  Enter the Database name for the db that we need to import → [E.g. site_db]:"
+	echo "👉  Enter the DATABASE name for the db that we need to import → [E.g. site_db]:"
 	echo "——————————————————————————————————"
 	read -r db_name
 
@@ -40,6 +43,11 @@ function start_cem() {
 
 	# Save the PWD.
 	init_dir=$(pwd)
+
+	echo "——————————————————————————————————"
+	echo "⏲  Downloading the backup..."
+	echo "——————————————————————————————————"
+
 
 	if wget "$backup_url" -O 'b.tar.gz' -q --show-progress  > /dev/null; then
 		echo "——————————————————————————————————"
@@ -84,7 +92,7 @@ function start_cem() {
 		echo "——————————————————————————————————"
 
 		# Import the DB of old site to new site.
-		wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$site_url"/htdocs/
+		wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$site_url"/htdocs/ --allow-root
 
 		# $is_search_replace y if search replace is needed.
 		echo "——————————————————————————————————"
@@ -106,7 +114,7 @@ function start_cem() {
 			read -r replace_query
 
 			# Search replace new site.
-			wp search-replace "$search_query" "$replace_query" --path=/var/www/"$site_url"/htdocs/
+			wp search-replace "$search_query" "$replace_query" --path=/var/www/"$site_url"/htdocs/ --allow-root
 
 			echo "——————————————————————————————————"
 			echo "🔥  Search Replace is done."
