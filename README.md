@@ -13,13 +13,19 @@ After you have completed the pre-requisite steps, all you need to do is download
 Download `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
-wget -qO cem https://git.io/vixvj && sudo bash ./cem install
+wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo sudo install ./cem /usr/local/bin/cem
 ```
 
 Run `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
 cem
+```
+
+To Uninstall `cPanel-EasyEngine-Migrate-CLI`
+
+```bash
+rm /usr/local/bin/cem
 ```
 
 Running this CLI will output several questions on your terminal, each question comes with an example value enclose with square brackets `[]` just fill up the answers and you'll be able to automate bits of the complete migration process.
