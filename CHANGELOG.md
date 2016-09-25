@@ -7,4 +7,5 @@
 - NEW: WP Files sync
 - NEW: WP DB import
 - NEW: Search and Replace
+- New: Documentation Updates
 
