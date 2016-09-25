@@ -103,13 +103,13 @@ function start_cem() {
 		if [[ "$is_search_replace" == "y" ]]; then
 			# $search_query The query of search.
 			echo "——————————————————————————————————"
-			echo "👉  Enter what you need to search? [E.g. https://domain.com ]:"
+			echo "👉  Enter what you need to SEARCH? [E.g. https://domain.com ]:"
 			echo "——————————————————————————————————"
 			read -r search_query
 
 			# $replace_query The query of replace.
 			echo "——————————————————————————————————"
-			echo "👉  Enter what you need to replace the search with? [E.g. https://domain.com ]:"
+			echo "👉  Enter what you need to REPLACE the search with? [E.g. http://domain.com ]:"
 			echo "——————————————————————————————————"
 			read -r replace_query
 
