@@ -124,6 +124,7 @@ else
 	echo "——————————————————————————————————"
 	echo "ℹ️  TIP: Check if the backup URL you added is a publically downloadable .tar.gz file."
 	echo "——————————————————————————————————"
-	rm -f "$backup_file"
+	cd ..
+	rm -rf "$init_dir"
 	exit 1;
 fi
