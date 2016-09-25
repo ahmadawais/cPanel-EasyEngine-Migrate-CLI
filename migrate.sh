@@ -7,6 +7,27 @@
 # @param $site_url The old site URL we are migrating.
 # @param $db_name Database name for the db that we need to import.
 
+install() {
+	# Give the right executable permissions.
+	chmod +x ./cem
+
+	# Make `cem` executable.
+	sudo install ./cem /usr/local/bin/cem
+
+	echo "——————————————————————————————————"
+	echo "ℹ️✔︎  cem Installed "
+	echo "——————————————————————————————————"
+}
+
+uninstall() {
+	echo "——————————————————————————————————"
+	echo "ℹ️❌  cem Uninstalled"
+	echo "——————————————————————————————————"
+
+	# delete cem.
+	rm /usr/local/bin/cem
+}
+
 # Backup file name that gets downloaded.
 backup_file=b.tar.gz
 
@@ -124,7 +145,9 @@ else
 	echo "——————————————————————————————————"
 	echo "ℹ️  TIP: Check if the backup URL you added is a publically downloadable .tar.gz file."
 	echo "——————————————————————————————————"
+
+	# Get back to where we were.
 	cd ..
-	rm -rf "$init_dir"
+	rm -f "$backup_file"
 	exit 1;
 fi
