@@ -13,7 +13,7 @@ After you have completed the pre-requisite steps, all you need to do is download
 Download `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
-wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo sudo install ./cem /usr/local/bin/cem
+sudo wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo sudo install ./cem /usr/local/bin/cem
 ```
 
 Run `cPanel-EasyEngine-Migrate-CLI`
