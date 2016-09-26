@@ -2,15 +2,15 @@
 
 [![CEM CLI](https://img.shields.io/badge/Built%20For%20WordPress-%E2%93%A6-lightgrey.svg?style=flat-square)](https://labs.ahmadawais.com/cem-cli/)
 
-cPanel to EasyEninge Migrate CLI (CEM CLI) is a bash script built to help people migrate their sites from a cPanel to an rented VPS with EasyEninge installed on it.
+cPanel to EasyEngine Migrate CLI (CEM CLI) is a bash script built to help people migrate their sites from a cPanel to an rented VPS with EasyEngine installed on it.
 
 ![CEM CLI](https://i.imgur.com/y5BKyPF.png) 
 
 ## Pre-requisite
-You need to rent a VPS with EasyEninge installed on it. Here's the list.
+You need to rent a VPS with EasyEngine installed on it. Here's the list.
 
 - Rent a VPS preferably with <kbd>Ubuntu 16.04 x64 OS</kbd> (I recommend Vultr.com | During summer, by using my affiliate link you [get $20 Signup Bonus](http://www.vultr.com/?ref=6942485-3B) or if you prefer [non-affiliate link](http://www.vultr.com/))
-- Install [EasyEninge](https://easyengine.io/) just run this command after logging into your VPS with SSH `wget -qO ee rt.cx/ee && sudo bash ee`
+- Install [EasyEngine](https://easyengine.io/) just run this command after logging into your VPS with SSH `wget -qO ee rt.cx/ee && sudo bash ee`
 
 ## Using CEM CLI
 After you have completed the pre-requisite steps, all you need to do is download and run the cPanel-EasyEngine-Migrate-CLI. You can do that by running the following commands.
@@ -18,7 +18,7 @@ After you have completed the pre-requisite steps, all you need to do is download
 Download `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
-sudo wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo sudo install ./cem /usr/local/bin/cem
+sudo wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo install ./cem /usr/local/bin/cem
 ```
 
 Run `cPanel-EasyEngine-Migrate-CLI`
@@ -46,9 +46,9 @@ Rent a VPS preferably with <kbd>Ubuntu 16.04 x64 OS</kbd> (I recommend Vultr.com
 
 ---
 
-### Step #2: EasyEninge 
+### Step #2: EasyEngine 
 
-Install [EasyEninge](https://easyengine.io/) just run this command after logging into your VPS with SSH `wget -qO ee rt.cx/ee && sudo bash ee`
+Install [EasyEngine](https://easyengine.io/) just run this command after logging into your VPS with SSH `wget -qO ee rt.cx/ee && sudo bash ee`
 
 ---
 
@@ -78,9 +78,9 @@ You can watch all these steps in this short video present at the end of these st
 While the CLI migrates your site for you, this following things happen. 
 - CEM CLI Downloads the backup in a folder you specified (I recommend running CEM CLI from the root i.e. `cd ~`)
 - Then CEM CLI extracts the backup inside a folder called backup
-- After that CEM CLI runs EasyEninge to install your site from the scratch (You need to edit [EasyEninge's configuration](https://easyengine.io/docs/config/) file to make sure EasyEninge should ask you for entering the `Database Name`, `Database Username`, `Database Password`, and `Database Prefix`. You should enter all of these values similar to what you have in your `wp-config.php` on your old server. **This is a crucial step.** Otherwise, you won't be able to import your old database)
+- After that CEM CLI runs EasyEngine to install your site from the scratch (You need to edit [EasyEngine's configuration](https://easyengine.io/docs/config/) file to make sure EasyEngine should ask you for entering the `Database Name`, `Database Username`, `Database Password`, and `Database Prefix`. You should enter all of these values similar to what you have in your `wp-config.php` on your old server. **This is a crucial step.** Otherwise, you won't be able to import your old database)
 - Then CEM CLI installs a new WP site for you with only `--wp` parameter set 
-- After that it uses `rsync` to copy/sync your WP Site's files from your backup to the EasyEninge site install location i.e. from `sitefolder/backup/homedir/public_html/` to `/var/www/domain.com/htdocs/`
+- After that it uses `rsync` to copy/sync your WP Site's files from your backup to the EasyEngine site install location i.e. from `sitefolder/backup/homedir/public_html/` to `/var/www/domain.com/htdocs/`
 - Then CEM CLI uses WP CLI to import your old database into the new sites database with `--allow-root` parameter
 - After that you can get an option to search and replace any string in the DB to go through with the migration. This is also powered by WPCLI and uses `--allow-root` parameter for now
 - Once all of this is done your site sits in the `/var/www/domain.com/` folder. In case you want to use WPCLI to do something else, you can cd to `/var/www/domain.com/htdocs/` path.
@@ -108,10 +108,10 @@ While CEM CLI is no where near an ideal script, it's helping me migrate/stage my
 - [ ] Site sync via NCFTP
 - [ ] Options to chose how to perform backups
 - [ ] Better install and uninstall routines
-- [ ] Mold it into EasyEninge's CLI instead of just a migration CLI (Thinking Out Loud)
+- [ ] Mold it into EasyEngine's CLI instead of just a migration CLI (Thinking Out Loud)
 
 ## Disclaimer (Beta Software)
-Make sure to test this CLI on new server. It is beta and completely new. I have tested it to transfer my cPanel sites to an EasyEninge VPS (based on Ubuntu 16.04  x64) while working on a Mac. Use at your own risk 🤔.
+Make sure to test this CLI on new server. It is beta and completely new. I have tested it to transfer my cPanel sites to an EasyEngine VPS (based on Ubuntu 16.04  x64) while working on a Mac. Use at your own risk 🤔.
 
 ## Changelog
 
