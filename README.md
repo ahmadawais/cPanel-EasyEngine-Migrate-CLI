@@ -2,7 +2,7 @@
 
 [![CEM CLI](https://img.shields.io/badge/Built%20For%20WordPress-%E2%93%A6-lightgrey.svg?style=flat-square)](https://labs.ahmadawais.com/cem-cli/)
 
-cPanel to EasyEngine Migrate CLI (CEM CLI) is a bash script built to help people migrate their sites from a cPanel to an rented VPS with EasyEngine installed on it.
+cPanel to EasyEngine Migrate CLI (CEM CLI) is a bash script built to help people migrate their sites from a cPanel to a rented VPS with EasyEngine installed on it.
 
 ![CEM CLI](https://i.imgur.com/y5BKyPF.png) 
 
