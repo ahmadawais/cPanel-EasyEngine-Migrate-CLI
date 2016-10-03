@@ -11,6 +11,7 @@
 # @param $db_name Database name for the db that we need to import.
 
 function cem_cli_init() {
+	clear
 	# Backup file name that gets downloaded.
 	backup_file=b.tar.gz
 
