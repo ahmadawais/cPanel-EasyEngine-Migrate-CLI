@@ -5,32 +5,27 @@
 #
 # Version: 1.0.1
 #
-# @param $backup_url URL to publically downloadable .tar.gz cPanel Backup file.
-# @param $backup_folder Backup is downloaded in this folder.
-# @param $site_url The old site URL we are migrating.
+# @param $BACKUP_URL URL to publically downloadable .tar.gz cPanel Backup file.
+# @param $BACKUP_FOLDER Backup is downloaded in this folder.
+# @param $SITE_URL The old site URL we are migrating.
 # @param $db_name Database name for the db that we need to import.
 
-function start_cem() {
+function cem_cli_init() {
 	# Backup file name that gets downloaded.
 	backup_file=b.tar.gz
 
-	# $backup_url URL to publically downloadable .tar.gz cPanel Backup file.
+	# $BACKUP_URL URL to publically downloadable .tar.gz cPanel Backup file.
 	echo "——————————————————————————————————"
 	echo "👉  Enter PATH to a publically downloadable cPanel backup [E.g. http://URL.com/backup.tar.gz]:"
 	echo "——————————————————————————————————"
-	read -r backup_url
+	read -r BACKUP_URL
 
-	# $backup_folder Backup is downloaded in this folder.
-	# echo "——————————————————————————————————"
-	# echo "👉  Enter FOLDER name to download the backup [E.g. SiteName]:"
-	# echo "——————————————————————————————————"
-
-	# $site_url The old site we are migrating.
+	# $SITE_URL The old site we are migrating.
 	echo "——————————————————————————————————"
 	echo "👉  Enter the SITE URL for the site are migrating in this format → [E.g. siteurl.com]:"
 	echo "——————————————————————————————————"
-	read -r site_url
-	backup_folder=$site_url
+	read -r SITE_URL
+	BACKUP_FOLDER=$SITE_URL
 
 	# $db_name Database name for the db that we need to import.
 	echo "——————————————————————————————————"
@@ -39,7 +34,7 @@ function start_cem() {
 	read -r db_name
 
 	# Make the backup dir and cd into it.
-	mkdir -p "$backup_folder" && cd "$backup_folder"
+	mkdir -p "$BACKUP_FOLDER" && cd "$BACKUP_FOLDER"
 
 	# Save the PWD.
 	init_dir=$(pwd)
@@ -48,8 +43,7 @@ function start_cem() {
 	echo "⏲  Downloading the backup..."
 	echo "——————————————————————————————————"
 
-
-	if wget "$backup_url" -O 'b.tar.gz' -q --show-progress  > /dev/null; then
+	if wget "$BACKUP_URL" -O 'b.tar.gz' -q --show-progress  > /dev/null; then
 		echo "——————————————————————————————————"
 		echo "🔥  Backup Download Successful 💯"
 		echo "——————————————————————————————————"
@@ -68,24 +62,24 @@ function start_cem() {
 		echo "🔥  Backup Extracted to the folder 💯"
 
 		# Delete the backup since you might have lesser space on the server.
-		rm backup/$site_url/b.tar.gz
+		rm -f b.tar.gz
 
 		echo "——————————————————————————————————"
 		echo "⏲  Let's create the old site with EasyEninge..."
 		echo "——————————————————————————————————"
 
 		# Create the site with EE.
-		ee site create "$site_url" --wp
+		ee site create "$SITE_URL" --wp
 
 		echo "——————————————————————————————————"
 		echo "⏲  Copying backup files where the belong..."
 		echo "——————————————————————————————————"
 
 		# Remove new WP content.
-		rm -rf /var/www/"$site_url"/htdocs/*
+		rm -rf /var/www/"$SITE_URL"/htdocs/*
 
 		# Add the backup content.
-		rsync -avz --info=progress2 --progress --stats --human-readable "$init_dir"/backup/homedir/public_html/* /var/www/"$site_url"/htdocs/
+		rsync -avz --info=progress2 --progress --stats --human-readable --exclude 'wp-config.php' --exclude 'wp-config-sample.php' "$init_dir"/backup/homedir/public_html/* /var/www/"$SITE_URL"/htdocs/
 
 		echo "——————————————————————————————————"
 		echo "🔥  Backup files were synced with the migrated site."
@@ -96,10 +90,15 @@ function start_cem() {
 		echo "——————————————————————————————————"
 
 		# Import the DB of old site to new site.
-		wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$site_url"/htdocs/ --allow-root
+		wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
 
 		# Delete the backup since you might have lesser space on the server.
-		rm -rf backup/$site_url
+		cd ..
+		rm -rf $SITE_URL
+
+		# Remove the wp-config.php and sample files.
+		rm -f /var/www/$SITE_URL/htdocs/wp-config.php
+		rm -f /var/www/$SITE_URL/htdocs/wp-config-sample.php
 
 		# $is_search_replace y if search replace is needed.
 		echo "——————————————————————————————————"
@@ -121,7 +120,7 @@ function start_cem() {
 			read -r replace_query
 
 			# Search replace new site.
-			wp search-replace "$search_query" "$replace_query" --path=/var/www/"$site_url"/htdocs/ --allow-root
+			wp search-replace "$search_query" "$replace_query" --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
 
 			echo "——————————————————————————————————"
 			echo "🔥  Search Replace is done."
@@ -149,4 +148,4 @@ function start_cem() {
 }
 
 # Run the CLI.
-start_cem
+cem_cli_init
