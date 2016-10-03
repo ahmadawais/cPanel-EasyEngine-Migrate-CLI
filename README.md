@@ -18,19 +18,19 @@ After you have completed the pre-requisite steps, all you need to do is download
 Download `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
-sudo wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo install ./cem /usr/local/bin/cem
+sudo wget -qO cemcli https://git.io/vPO0q && sudo chmod +x ./cemcli && sudo install ./cemcli /usr/local/bin/cemcli
 ```
 
 Run `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
-cem
+cemcli
 ```
 
 To Uninstall `cPanel-EasyEngine-Migrate-CLI`
 
 ```bash
-rm /usr/local/bin/cem
+rm /usr/local/bin/cemcli
 ```
 
 Running this CLI will output several questions on your terminal, each question comes with an example value enclose with square brackets `[]` just fill up the answers and you'll be able to automate bits of the complete migration process.
@@ -68,8 +68,8 @@ You can watch all these steps in this short video present at the end of these st
 ### Step #4: Run CEM CLI
 
 - It's time to run the CEM CLI. Log in to your VPS via SSH
-- Install CEM CLI by running `sudo wget -qO cem https://git.io/vixvj && sudo chmod +x ./cem && sudo sudo install ./cem /usr/local/bin/cem` command
-- Then run `cem` command and start answering the questions as I did in the video below.
+- Install CEM CLI by running install command as mentioned above command
+- Then run `cemcli` command and start answering the questions as I did in the video below.
 
 ---
 
@@ -85,6 +85,7 @@ While the CLI migrates your site for you, this following things happen.
 - After that you can get an option to search and replace any string in the DB to go through with the migration. This is also powered by WPCLI and uses `--allow-root` parameter for now
 - Once all of this is done your site sits in the `/var/www/domain.com/` folder. In case you want to use WPCLI to do something else, you can cd to `/var/www/domain.com/htdocs/` path.
 - If you edit your systems host files `nano /etc/hosts` and append `XX.XX.XX.XX domain.com www.domain.com` at the end, then you can browse your migrated site to check if everything is running fine. (XX.XX.XX.XX is the IP of your server. I found out that if I flush the DNS cache in my mac then I can avoid the delay for the hosts file edits to take effect. You can flush your DNS cache by running this command on your mac `sudo killall -HUP mDNSResponder`)
+- `cemcli` removes the backups both extracted and tar files as soon as it can to save as much space as possible.
 
 ---
 
@@ -113,7 +114,10 @@ While CEM CLI is no where near an ideal script, it's helping me migrate/stage my
 ## Disclaimer (Beta Software)
 Make sure to test this CLI on new server. It is beta and completely new. I have tested it to transfer my cPanel sites to an EasyEngine VPS (based on Ubuntu 16.04  x64) while working on a Mac. Use at your own risk 🤔.
 
-## Changelog
+## [Changelog](https://github.com/ahmadawais/cPanel-EasyEngine-Migrate-CLI/blob/master/CHANGELOG.md)
+
+### Version 1.0.1 — 2016-10-04
+- NEW: `cemcli` removes the backups both extracted and tar files as soon as it can to save as much space as possible.
 
 ### Version 1.0.0 — 2016-09-25
 - First version

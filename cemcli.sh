@@ -3,7 +3,7 @@
 #
 # Migrates cPanel websites to EasyEngine based VPS.
 #
-# Version: 1.0.0
+# Version: 1.0.1
 #
 # @param $backup_url URL to publically downloadable .tar.gz cPanel Backup file.
 # @param $backup_folder Backup is downloaded in this folder.
