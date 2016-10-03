@@ -21,16 +21,16 @@ function start_cem() {
 	read -r backup_url
 
 	# $backup_folder Backup is downloaded in this folder.
-	echo "——————————————————————————————————"
-	echo "👉  Enter FOLDER name to download the backup [E.g. SiteName]:"
-	echo "——————————————————————————————————"
-	read -r backup_folder
+	# echo "——————————————————————————————————"
+	# echo "👉  Enter FOLDER name to download the backup [E.g. SiteName]:"
+	# echo "——————————————————————————————————"
 
 	# $site_url The old site we are migrating.
 	echo "——————————————————————————————————"
 	echo "👉  Enter the SITE URL for the site are migrating in this format → [E.g. siteurl.com]:"
 	echo "——————————————————————————————————"
 	read -r site_url
+	backup_folder=$site_url
 
 	# $db_name Database name for the db that we need to import.
 	echo "——————————————————————————————————"
@@ -65,7 +65,11 @@ function start_cem() {
 		tar -xvzf $backup_file -C backup --strip-components=1
 
 		echo "——————————————————————————————————"
-		echo "🔥  Backup Extracted to a folder 💯"
+		echo "🔥  Backup Extracted to the folder 💯"
+
+		# Delete the backup since you might have lesser space on the server.
+		rm backup/$site_url/b.tar.gz
+
 		echo "——————————————————————————————————"
 		echo "⏲  Let's create the old site with EasyEninge..."
 		echo "——————————————————————————————————"
@@ -93,6 +97,9 @@ function start_cem() {
 
 		# Import the DB of old site to new site.
 		wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$site_url"/htdocs/ --allow-root
+
+		# Delete the backup since you might have lesser space on the server.
+		rm -rf backup/$site_url
 
 		# $is_search_replace y if search replace is needed.
 		echo "——————————————————————————————————"
