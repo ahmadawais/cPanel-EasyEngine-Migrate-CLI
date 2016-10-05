@@ -57,7 +57,6 @@ function cem_cli_init() {
 	BACKUP_FILE=b.tar.gz
 
 	# $BACKUP_URL URL to publically downloadable .tar.gz cPanel Backup file.
-	# $BACKUP_URL URL to publically downloadable .tar.gz cPanel Backup file.
 	echo "—"
 	echo "${gb}${bf} CEM CLI ⚡️  ${r}"
 	echo "${wb}${bf} Version 1.1.0 ${r}"
