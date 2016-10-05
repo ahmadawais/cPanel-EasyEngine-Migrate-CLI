@@ -65,11 +65,11 @@ function cem_cli_init() {
 	echo "—"
 
 	echo "${gb}${bf}  ℹ️  Pre CEM CLI Checklist: ${r}"
-	echo "${wb}${bf}  ␥  1. Have you installed EasyEngine? If not then do it (INFO: https://easyengine.io/docs/install/)? ${r}"
-	echo "${wb}${bf}  ␥  2. Did you install WPCLI from EasyEngine Stacks? (INFO: https://easyengine.io/docs/commands/stack/) ${r}"
+	echo "${wb}${bf}  ␥  1. Have you installed EasyEngine? If not then do it!${r} (INFO: https://easyengine.io/docs/install/)?"
+	echo "${wb}${bf}  ␥  2. Did you install WPCLI from EasyEngine Stacks?${r} (INFO: https://easyengine.io/docs/commands/stack/)"
 	echo "${wb}${bf}  ␥  3. Do you have a publically downloadable full backup of your cPanel? ${r}"
 	echo "${wb}${bf}  ␥  4. Do you have your site's DB Name, USER, PASS, and PREFIX? You can find this inside 'wp-config.php' file. ${r}"
-	echo "${wb}${bf}  ␥  5. Have you set EasyEngine to ask for DB Name, USER, PASS, and PREFIX? If not then do that by 'sudo nano /etc/ee/ee.conf' (INFO: https://easyengine.io/docs/config/) ${r}"
+	echo "${wb}${bf}  ␥  5. Have you set EasyEngine to ask for DB Name, USER, PASS, and PREFIX? If not then do that by 'sudo nano /etc/ee/ee.conf'${r} (INFO: https://easyengine.io/docs/config/)"
 	echo "${blb}${bf}  INFO: All the above steps above are required for CEM CLI to work. ${r}"
 
 	echo "——————————————————————————————————"
