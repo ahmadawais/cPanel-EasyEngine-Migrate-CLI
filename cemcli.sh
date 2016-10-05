@@ -72,7 +72,9 @@ echo "${blb}${bf}  INFO: All the above steps above are required for CEM CLI to w
 echo "——————————————————————————————————"
 echo "👉  Do you have the INFO required for CEM CLI to run?"
 echo "——————————————————————————————————"
-read -p "Are you sure? [ y | n ]" -n 1 -r
+read -p "Are you sure? [ y | n ]  " -n 1 -r
+echo    # (optional) move to a new line
+echo    # (optional) move to a new line
 echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 	echo "${rb}${wf}  ❌  Get the INFO and run CEM CLI again. ${r}"
