@@ -73,9 +73,6 @@ echo "————————————————————————�
 echo "👉  Do you have the INFO required for CEM CLI to run?"
 echo "——————————————————————————————————"
 read -p "Are you sure? [ y | n ]  " -n 1 -r
-echo    # (optional) move to a new line
-echo    # (optional) move to a new line
-echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 	echo "${rb}${wf}  ❌  Get the INFO and run CEM CLI again. ${r}"
     exit 1
@@ -86,8 +83,9 @@ fi
 
 # Main function.
 function cem_cli_init() {
+	echo ; echo ; echo # move to a new line
 	echo "——————————————————————————————————"
-	echo "👉  Enter PATH to a publically downloadable cPanel backup [E.g. http://domain.ext/backup.tar.gz]:"
+	echo "👉  Enter URL/LINK to a publically downloadable cPanel backup [E.g. http://domain.ext/backup.tar.gz]:"
 	echo "——————————————————————————————————"
 	echo "NOTES:"
 	echo " ␥	1. Backup your site on cPanel via Backup Wizard > Backup > Full Backup > Generate Backup"
@@ -97,6 +95,7 @@ function cem_cli_init() {
 	read -r BACKUP_URL
 
 	# $SITE_URL The old site we are migrating.
+	echo ; echo ; echo # move to a new line
 	echo "——————————————————————————————————"
 	echo "👉  Enter the SITE URL for the site you are migrating in eaxaclty this format → [E.g. domain.ext or sub.domain.ext]:"
 	echo "——————————————————————————————————"
@@ -108,6 +107,7 @@ function cem_cli_init() {
 	BACKUP_FOLDER=$SITE_URL
 
 	# $IS_SUBDOMAIN Is it a subdomain?
+	echo ; echo ; echo # move to a new line
 	echo "——————————————————————————————————"
 	echo "👉  Is this a SUB DOMAIN? Enter [ y | n ]:"
 	echo "——————————————————————————————————"
@@ -115,6 +115,7 @@ function cem_cli_init() {
 
 	if [[ "y" == $IS_SUBDOMAIN || "Y" == $IS_SUBDOMAIN ]]; then
 		# $SUBDOMAIN_FOLDER: The sub domain folder.
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "👉  Enter the SubDomain FOLDER NAME → [E.g. subdomain ]:"
 		echo "——————————————————————————————————"
@@ -126,6 +127,7 @@ function cem_cli_init() {
 	fi
 
 	# $db_name Database name for the db that we need to import.
+	echo ; echo ; echo # move to a new line
 	echo "——————————————————————————————————"
 	echo "👉  Enter the DATABASE name for the db that we need to import → [E.g. site_db]:"
 	echo "——————————————————————————————————"
@@ -140,12 +142,13 @@ function cem_cli_init() {
 
 	# Save the PWD.
 	init_dir=$(pwd)
-
+	echo ; echo ; echo # move to a new line
 	echo "——————————————————————————————————"
 	echo "⏲  Downloading the backup..."
 	echo "——————————————————————————————————"
 
 	if wget "$BACKUP_URL" -O 'b.tar.gz' -q --show-progress  > /dev/null; then
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "🔥  Backup Download Successful 💯"
 		echo "——————————————————————————————————"
@@ -160,12 +163,14 @@ function cem_cli_init() {
 		# --strip-components=1 to remove the root(first level) directory inside the zip.
 		tar -xvzf $BACKUP_FILE -C backup --strip-components=1
 
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "🔥  Backup Extracted to the folder 💯"
 
 		# Delete the backup since you might have lesser space on the server.
 		rm -f b.tar.gz
 
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "⏲  Let's create the old site with EasyEninge..."
 		echo "——————————————————————————————————"
@@ -173,6 +178,7 @@ function cem_cli_init() {
 		# Create the site with EE.
 		ee site create "$SITE_URL" --wp
 
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "⏲  Copying backup files where the belong..."
 		echo "——————————————————————————————————"
@@ -188,10 +194,12 @@ function cem_cli_init() {
 			rsync -avz --info=progress2 --progress --stats --human-readable --exclude 'wp-config.php' --exclude 'wp-config-sample.php' "$init_dir"/backup/homedir/public_html/* /var/www/"$SITE_URL"/htdocs/
 		fi
 
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "🔥  Backup files were synced with the migrated site."
 		echo "——————————————————————————————————"
 
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "⏲  Now importing the SQL database..."
 		echo "——————————————————————————————————"
@@ -208,6 +216,7 @@ function cem_cli_init() {
 		rm -f /var/www/$SITE_URL/htdocs/wp-config-sample.php
 
 		# $IS_SEARCH_REPLACE y if search replace is needed.
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "👉  Do you want to search and replace something? [ y/n ]:"
 		echo "——————————————————————————————————"
@@ -219,6 +228,7 @@ function cem_cli_init() {
 
 		if [[ "$IS_SEARCH_REPLACE" == "y" ]]; then
 			# $SEARCH_QUERY The query of search.
+			echo ; echo ; echo # move to a new line
 			echo "——————————————————————————————————"
 			echo "👉  Enter what you need to SEARCH? [E.g. http://domain.ext ]:"
 			echo "——————————————————————————————————"
@@ -230,6 +240,7 @@ function cem_cli_init() {
 			read -r SEARCH_QUERY
 
 			# $REPLACE_QUERY The query of replace.
+			echo ; echo ; echo # move to a new line
 			echo "——————————————————————————————————"
 			echo "👉  Enter what you need to REPLACE the search with? [E.g. http://domain.com ]:"
 			echo "——————————————————————————————————"
@@ -243,11 +254,13 @@ function cem_cli_init() {
 			# Search replace new site.
 			wp search-replace "$SEARCH_QUERY" "$REPLACE_QUERY" --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
 
+			echo ; echo ; echo # move to a new line
 			echo "——————————————————————————————————"
 			echo "🔥  Search Replace is done."
 			echo "——————————————————————————————————"
 		fi
 
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "-"
 		echo "🔥  ✔︎✔︎✔︎ MIGRATION completed for site: $SITE_URL. ✔︎✔︎✔︎"
@@ -255,6 +268,7 @@ function cem_cli_init() {
 		echo "——————————————————————————————————"
 
 	else
+		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "${rb}${wf}  ❌  Backup Download Failed 👎 ${r}"
 		echo "——————————————————————————————————"
