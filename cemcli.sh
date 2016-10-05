@@ -77,7 +77,7 @@ function cem_cli_init() {
 	read -r INFO
 
 	if [[ "y" != "$INFO" || "Y" != "$INFO" ]]; then
-		echo "${rb}${wf}  ❌ Get the INFO and run CEM CLI again. ${r}"
+		echo "${rb}${wf}  ❌  Get the INFO and run CEM CLI again. ${r}"
 		exit 1
 	fi
 
