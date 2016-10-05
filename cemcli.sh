@@ -188,7 +188,7 @@ function cem_cli_init() {
 
 		if [[ "y" == $IS_SUBDOMAIN || "Y" == $IS_SUBDOMAIN ]]; then
 			# Add the backup content.
-			rsync -avz --info=progress2 --progress --stats --human-readable --exclude 'wp-config.php' --exclude 'wp-config-sample.php' "$init_dir"/backup/homedir/public_html/"$SUBDOMAIN_FOLDER"* /var/www/"$SITE_URL"/htdocs/
+			rsync -avz --info=progress2 --progress --stats --human-readable --exclude 'wp-config.php' --exclude 'wp-config-sample.php' "$init_dir"/backup/homedir/public_html/"$SUBDOMAIN_FOLDER"/* /var/www/"$SITE_URL"/htdocs/
 		else
 			# Add the backup content.
 			rsync -avz --info=progress2 --progress --stats --human-readable --exclude 'wp-config.php' --exclude 'wp-config-sample.php' "$init_dir"/backup/homedir/public_html/* /var/www/"$SITE_URL"/htdocs/
