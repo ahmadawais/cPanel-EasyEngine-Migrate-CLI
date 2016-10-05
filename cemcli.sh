@@ -58,11 +58,11 @@ function cem_cli_init() {
 
 	# $BACKUP_URL URL to publically downloadable .tar.gz cPanel Backup file.
 	# $BACKUP_URL URL to publically downloadable .tar.gz cPanel Backup file.
-	echo "——————————————————————————————————"
+	echo "—"
 	echo "${gb}${bf} CEM CLI ⚡️  ${r}"
 	echo "${wb}${bf} Version 1.1.0 ${r}"
 	echo "${wb}${bf} cPanel to EasyEngine Migration CLI${r}"
-	echo "——————————————————————————————————"
+	echo "—"
 
 	echo "${gb}${bf}  ℹ️  Pre CEM CLI Checklist: ${r}"
 	echo "${wb}${bf}  ␥  1. Have you installed EasyEngine? If not then do it (INFO: https://easyengine.io/docs/install/)? ${r}"
@@ -71,9 +71,7 @@ function cem_cli_init() {
 	echo "${wb}${bf}  ␥  4. Do you have your site's DB Name, USER, PASS, and PREFIX? You can find this inside 'wp-config.php' file. ${r}"
 	echo "${wb}${bf}  ␥  5. Have you set EasyEngine to ask for DB Name, USER, PASS, and PREFIX? If not then do that by 'sudo nano /etc/ee/ee.conf' (INFO: https://easyengine.io/docs/config/) ${r}"
 	echo "${blb}${bf}  INFO: All the above steps above are required for CEM CLI to work. ${r}"
-	echo "——————————————————————————————————"
 
-	echo "-"
 	echo "——————————————————————————————————"
 	echo "👉  Do you have the INFO required for CEM CLI to run? [ y | n ]:"
 	echo "——————————————————————————————————"
