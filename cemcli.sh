@@ -204,13 +204,13 @@ function cem_cli_init() {
 		echo "🔥  Backup files were synced with the migrated site."
 		echo "——————————————————————————————————"
 
-		echo ; echo ; echo # move to a new line
-		echo "——————————————————————————————————"
-		echo "⏲  Now importing the SQL database..."
-		echo "——————————————————————————————————"
-
 		# DB Import only if the site is not static.
 		if [[ "n" == $IS_STATIC || "N" == $IS_STATIC ]]; then
+			echo ; echo ; echo # move to a new line
+			echo "——————————————————————————————————"
+			echo "⏲  Now importing the SQL database..."
+			echo "——————————————————————————————————"
+
 			# Import the DB of old site to new site.
 			wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
 		fi
