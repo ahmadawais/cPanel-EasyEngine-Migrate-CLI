@@ -11,30 +11,13 @@
 # @param $db_name Database name for the db that we need to import.
 # @param $IS_SUBDOMAIN Is it a subdomain?
 # @param $SUBDOMAIN_FOLDER: The sub domain folder.
+# @param $IS_STATIC Is this a static site?
 
 # Colors.
 #
 # colors from tput
 # http://stackoverflow.com/a/20983251/950111
-# Num  Colour    #define         R G B
-# 0    black     COLOR_BLACK     0,0,0
-# 1    red       COLOR_RED       1,0,0
-# 2    green     COLOR_GREEN     0,1,0
-# 3    yellow    COLOR_YELLOW    1,1,0
-# 4    blue      COLOR_BLUE      0,0,1
-# 5    magenta   COLOR_MAGENTA   1,0,1
-# 6    cyan      COLOR_CYAN      0,1,1
-# 7    white     COLOR_WHITE     1,1,1
-#
-# tput setab [1-7] # Set the background colour using ANSI escape
-# tput setaf [1-7] # Set the foreground colour using ANSI escape
-# tput sgr0    # Reset text format to the terminal's default
-# tput bel     # Play a bell
-#
 # Usage:
-# red=`tput setaf 1`
-# green=`tput setaf 2`
-# r=`tput sgr0`
 # echo "${redb}red text ${gb}green text${r}"
 bb=`tput setab 0` #set background black
 bf=`tput setaf 0` #set foreground black
@@ -74,7 +57,11 @@ echo "👉  Do you have the INFO required for CEM CLI to run?"
 echo "——————————————————————————————————"
 read -p "Are you sure? [ y | n ]  " -n 1 -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-	echo "${rb}${wf}  ❌  Get the INFO and run CEM CLI again. ${r}"
+	echo
+	echo "Quitting..."
+	echo "——————————————————————————————————"
+	echo "${wb}${rf}  ⚡️  Get the INFO and run CEM CLI again. ${r}"
+	echo "——————————————————————————————————"
     exit 1
 fi
 # if [[ "y" =~ $IS_SUBDOMAIN ]]; then
@@ -126,16 +113,29 @@ function cem_cli_init() {
 		read -r SUBDOMAIN_FOLDER
 	fi
 
-	# $db_name Database name for the db that we need to import.
+	# $IS_STATIC Is this a static site?
 	echo ; echo ; echo # move to a new line
 	echo "——————————————————————————————————"
-	echo "👉  Enter the DATABASE name for the db that we need to import → [E.g. site_db]:"
+	echo "👉  Is this a STATIC SITE? Enter [ y | n ]:"
 	echo "——————————————————————————————————"
 	echo "NOTES:"
-	echo " ␥	1. It's important that the database name should be the same as you have on the old host."
-	echo " ␥	2. This will be used to search for the database backup inside you downloaded backup."
+	echo " ␥	1. If this is a static site i.e. an HTML site then type y and press enter."
+	echo " ␥	2. If this is a WordPress site then it is not static, type n and press enter."
 	echo "——————————————————————————————————"
-	read -r db_name
+	read -r IS_STATIC
+
+	if [[ "n" == $IS_STATIC || "N" == $IS_STATIC ]]; then
+		# $db_name Database name for the db that we need to import.
+		echo ; echo ; echo # move to a new line
+		echo "——————————————————————————————————"
+		echo "👉  Enter the DATABASE name for the db that we need to import → [E.g. site_db]:"
+		echo "——————————————————————————————————"
+		echo "NOTES:"
+		echo " ␥	1. It's important that the database name should be the same as you have on the old host."
+		echo " ␥	2. This will be used to search for the database backup inside you downloaded backup."
+		echo "——————————————————————————————————"
+		read -r db_name
+	fi
 
 	# Make the backup dir and cd into it.
 	mkdir -p "$BACKUP_FOLDER" && cd "$BACKUP_FOLDER"
@@ -175,15 +175,20 @@ function cem_cli_init() {
 		echo "⏲  Let's create the old site with EasyEninge..."
 		echo "——————————————————————————————————"
 
-		# Create the site with EE.
-		ee site create "$SITE_URL" --wp
+		if [[ "n" == $IS_STATIC || "N" == $IS_STATIC ]]; then
+			# Create the site with EE.
+			ee site create "$SITE_URL" --wp
+		else
+			# Create a static site with EE.
+			ee site create "$SITE_URL" --html
+		fi
 
 		echo ; echo ; echo # move to a new line
 		echo "——————————————————————————————————"
 		echo "⏲  Copying backup files where the belong..."
 		echo "——————————————————————————————————"
 
-		# Remove new WP content.
+		# Remove the new site content created by EE.
 		rm -rf /var/www/"$SITE_URL"/htdocs/*
 
 		if [[ "y" == $IS_SUBDOMAIN || "Y" == $IS_SUBDOMAIN ]]; then
@@ -204,8 +209,11 @@ function cem_cli_init() {
 		echo "⏲  Now importing the SQL database..."
 		echo "——————————————————————————————————"
 
-		# Import the DB of old site to new site.
-		wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
+		# DB Import only if the site is not static.
+		if [[ "n" == $IS_STATIC || "N" == $IS_STATIC ]]; then
+			# Import the DB of old site to new site.
+			wp db import "$init_dir"/backup/mysql/"$db_name".sql --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
+		fi
 
 		# Delete the backup since you might have lesser space on the server.
 		cd ..
@@ -215,49 +223,53 @@ function cem_cli_init() {
 		rm -f /var/www/$SITE_URL/htdocs/wp-config.php
 		rm -f /var/www/$SITE_URL/htdocs/wp-config-sample.php
 
-		# $IS_SEARCH_REPLACE y if search replace is needed.
-		echo ; echo ; echo # move to a new line
-		echo "——————————————————————————————————"
-		echo "👉  Do you want to search and replace something? [ y/n ]:"
-		echo "——————————————————————————————————"
-		echo "NOTES:"
-		echo " ␥	1. It will run only once."
-		echo " ␥	2. This is powered by WPCLI (INFO: http://wp-cli.org/commands/search-replace/)."
-		echo "——————————————————————————————————"
-		read -r IS_SEARCH_REPLACE
+		# Search Replace not needed for static sites.
+		if [[ "n" == $IS_STATIC || "N" == $IS_STATIC ]]; then
 
-		if [[ "$IS_SEARCH_REPLACE" == "y" ]]; then
-			# $SEARCH_QUERY The query of search.
+			# $IS_SEARCH_REPLACE y if search replace is needed.
 			echo ; echo ; echo # move to a new line
 			echo "——————————————————————————————————"
-			echo "👉  Enter what you need to SEARCH? [E.g. http://domain.ext ]:"
+			echo "👉  Do you want to search and replace something? [ y/n ]:"
 			echo "——————————————————————————————————"
 			echo "NOTES:"
-			echo " ␥	1. WP CLI will search for what you enter here.."
-			echo " ␥	2. Enter what you want to be searched and replaced"
-			echo " ␥	3. E.g. if you want to change http:// to https:// then enter http://domain.ext here."
+			echo " ␥	1. It will run only once."
+			echo " ␥	2. This is powered by WPCLI (INFO: http://wp-cli.org/commands/search-replace/)."
 			echo "——————————————————————————————————"
-			read -r SEARCH_QUERY
+			read -r IS_SEARCH_REPLACE
 
-			# $REPLACE_QUERY The query of replace.
-			echo ; echo ; echo # move to a new line
-			echo "——————————————————————————————————"
-			echo "👉  Enter what you need to REPLACE the search with? [E.g. http://domain.com ]:"
-			echo "——————————————————————————————————"
-			echo "NOTES:"
-			echo " ␥	1. WP CLI will replace what you entered before with what you'll enter here."
-			echo " ␥	2. Enter what you want to replace your searched query."
-			echo " ␥	3. E.g. if you want to change http:// to https:// then enter https://domain.ext here."
-			echo "——————————————————————————————————"
-			read -r REPLACE_QUERY
+			if [[ "$IS_SEARCH_REPLACE" == "y" ]]; then
+				# $SEARCH_QUERY The query of search.
+				echo ; echo ; echo # move to a new line
+				echo "——————————————————————————————————"
+				echo "👉  Enter what you need to SEARCH? [E.g. http://domain.ext ]:"
+				echo "——————————————————————————————————"
+				echo "NOTES:"
+				echo " ␥	1. WP CLI will search for what you enter here.."
+				echo " ␥	2. Enter what you want to be searched and replaced"
+				echo " ␥	3. E.g. if you want to change http:// to https:// then enter http://domain.ext here."
+				echo "——————————————————————————————————"
+				read -r SEARCH_QUERY
 
-			# Search replace new site.
-			wp search-replace "$SEARCH_QUERY" "$REPLACE_QUERY" --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
+				# $REPLACE_QUERY The query of replace.
+				echo ; echo ; echo # move to a new line
+				echo "——————————————————————————————————"
+				echo "👉  Enter what you need to REPLACE the search with? [E.g. http://domain.com ]:"
+				echo "——————————————————————————————————"
+				echo "NOTES:"
+				echo " ␥	1. WP CLI will replace what you entered before with what you'll enter here."
+				echo " ␥	2. Enter what you want to replace your searched query."
+				echo " ␥	3. E.g. if you want to change http:// to https:// then enter https://domain.ext here."
+				echo "——————————————————————————————————"
+				read -r REPLACE_QUERY
 
-			echo ; echo ; echo # move to a new line
-			echo "——————————————————————————————————"
-			echo "🔥  Search Replace is done."
-			echo "——————————————————————————————————"
+				# Search replace new site.
+				wp search-replace "$SEARCH_QUERY" "$REPLACE_QUERY" --path=/var/www/"$SITE_URL"/htdocs/ --allow-root
+
+				echo ; echo ; echo # move to a new line
+				echo "——————————————————————————————————"
+				echo "🔥  Search Replace is done."
+				echo "——————————————————————————————————"
+			fi
 		fi
 
 		echo ; echo ; echo # move to a new line

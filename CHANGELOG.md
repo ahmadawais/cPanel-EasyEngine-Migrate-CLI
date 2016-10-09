@@ -1,5 +1,8 @@
 ## Changelog
 
+### Version 1.1.1 — 2016-10-09
+- Migrate Static sites
+
 ### Version 1.1.0 — 2016-10-05
 - NEW: Sub domain migration.
 - NEW: Detailed documentation.

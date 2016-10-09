@@ -116,6 +116,9 @@ Make sure to test this CLI on new server. It is beta and completely new. I have 
 
 ## [Changelog](https://github.com/ahmadawais/cPanel-EasyEngine-Migrate-CLI/blob/master/CHANGELOG.md)
 
+### Version 1.1.1 — 2016-10-09
+- Migrate Static sites
+
 ### Version 1.1.0 — 2016-10-05
 - NEW: Sub domain migration.
 - NEW: Detailed documentation.
