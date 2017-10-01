@@ -33,7 +33,7 @@ To Uninstall `cPanel-EasyEngine-Migrate-CLI`
 rm /usr/local/bin/cemcli
 ```
 
-Running this CLI will output several questions on your terminal, each question comes with an example value enclose with square brackets `[]` just fill up the answers and you'll be able to automate bits of the complete migration process.
+Running this CLI will output several questions on your terminal. Each question comes with an example value enclose with square brackets `[]`. Just fill up the answers and you'll be able to automate bits of the complete migration process.
 
 ## How To?
 Yes, I get that. This script is quite opinionated and in the beta stage. While I have released v1.0.0 it still needs to be tested and I plan to maintain and grow it. If you are wondering how it works, here's a step by step guide.
@@ -48,27 +48,28 @@ Rent a VPS preferably with <kbd>Ubuntu 16.04 x64 OS</kbd> (I recommend Vultr.com
 
 ### Step #2: EasyEngine 
 
-Install [EasyEngine](https://easyengine.io/) just run this command after logging into your VPS with SSH `wget -qO ee rt.cx/ee && sudo bash ee`
+Install [EasyEngine](https://easyengine.io/) and run this command after logging into your VPS with SSH `wget -qO ee rt.cx/ee && sudo bash ee`
 
 ---
 
 ### Step #3: Backup
 
-Take a backup of your cPanel. I prefer taking a complete backup and that's how this script works. 1. Go to your site's  <kbd>cPanel > Backup Wizard</kbd> 
+Take a backup of your cPanel. I prefer taking a complete backup and that's how this script works. 
+1. Go to your site's  <kbd>cPanel > Backup Wizard</kbd> 
 2. Click <kbd>Backup</kbd>, then <kbd>Full Backup</kbd> and finally click on <kbd>Generate Backup</kbd>
-3. Once the backup has been generate, go to <kbd>File Manager</kbd>
+3. Once the backup is generated, go to <kbd>File Manager</kbd>
 4. Rename the backup file to something simple like <kbd>bc.tar.gz</kbd>
 5. Move the backup file to `/public_html/` folder
 6. Set the world read permission so that it can be downloaded via wget
 
-You can watch all these steps in this short video present at the end of these steps.
+You can watch all these steps in this short video which can be found at the end of these steps.
 
 ---
 
 ### Step #4: Run CEM CLI
 
-- It's time to run the CEM CLI. Log in to your VPS via SSH
-- Install CEM CLI by running install command as mentioned above command
+- It's time to run the CEM CLI. Log in to your VPS via SSH.
+- Install CEM CLI by running install command as mentioned above command.
 - Then run `cemcli` command and start answering the questions as I did in the video below.
 
 ---
@@ -76,15 +77,15 @@ You can watch all these steps in this short video present at the end of these st
 ### Step #5: What you need to know!
 
 While the CLI migrates your site for you, this following things happen. 
-- CEM CLI Downloads the backup in a folder you specified (I recommend running CEM CLI from the root i.e. `cd ~`)
-- Then CEM CLI extracts the backup inside a folder called backup
-- After that CEM CLI runs EasyEngine to install your site from the scratch (You need to edit [EasyEngine's configuration](https://easyengine.io/docs/config/) file to make sure EasyEngine should ask you for entering the `Database Name`, `Database Username`, `Database Password`, and `Database Prefix`. You should enter all of these values similar to what you have in your `wp-config.php` on your old server. **This is a crucial step.** Otherwise, you won't be able to import your old database)
-- Then CEM CLI installs a new WP site for you with only `--wp` parameter set 
-- After that it uses `rsync` to copy/sync your WP Site's files from your backup to the EasyEngine site install location i.e. from `sitefolder/backup/homedir/public_html/` to `/var/www/domain.com/htdocs/`
-- Then CEM CLI uses WP CLI to import your old database into the new sites database with `--allow-root` parameter
-- After that you can get an option to search and replace any string in the DB to go through with the migration. This is also powered by WPCLI and uses `--allow-root` parameter for now
+- CEM CLI Downloads the backup in a folder you specified (I recommend running CEM CLI from the root i.e. `cd ~`).
+- Then CEM CLI extracts the backup inside a folder called backup.
+- After that CEM CLI runs EasyEngine to install your site from the scratch (You need to edit [EasyEngine's configuration](https://easyengine.io/docs/config/) file to make sure EasyEngine should ask you for entering the `Database Name`, `Database Username`, `Database Password`, and `Database Prefix`. You should enter all of these values similar to what you have in your `wp-config.php` on your old server. **This is a crucial step.** Otherwise, you won't be able to import your old database).
+- Then CEM CLI installs a new WP site for you with only `--wp` parameter set. 
+- After that it uses `rsync` to copy/sync your WP Site's files from your backup to the EasyEngine site install location i.e. from `sitefolder/backup/homedir/public_html/` to `/var/www/domain.com/htdocs/`.
+- Then CEM CLI uses WP CLI to import your old database into the new sites database with `--allow-root` parameter.
+- After that you can get an option to search and replace any string in the DB to go through with the migration. This is also powered by WPCLI and uses `--allow-root` parameter for now.
 - Once all of this is done your site sits in the `/var/www/domain.com/` folder. In case you want to use WPCLI to do something else, you can cd to `/var/www/domain.com/htdocs/` path.
-- If you edit your systems host files `nano /etc/hosts` and append `XX.XX.XX.XX domain.com www.domain.com` at the end, then you can browse your migrated site to check if everything is running fine. (XX.XX.XX.XX is the IP of your server. I found out that if I flush the DNS cache in my mac then I can avoid the delay for the hosts file edits to take effect. You can flush your DNS cache by running this command on your mac `sudo killall -HUP mDNSResponder`)
+- If you edit your systems host files `nano /etc/hosts` and append `XX.XX.XX.XX domain.com www.domain.com` at the end, then you can browse your migrated site to check if everything is running fine. (XX.XX.XX.XX is the IP of your server. I found out that if I flush the DNS cache in my mac then I can avoid the delay for the hosts file edits to take effect. You can flush your DNS cache by running this command on your mac `sudo killall -HUP mDNSResponder`).
 - `cemcli` removes the backups both extracted and tar files as soon as it can to save as much space as possible.
 
 ---
@@ -97,7 +98,7 @@ You can either try to guess how it's done with the GIF below or [Watch a 2 min v
 
 ## What Does Future Hold for CEM CLI?
 
-While CEM CLI is no where near an ideal script, it's helping me migrate/stage my sites on self-managed VPS. I plan to improve this script by adding several new routines to it. Following is a list of ideas that I have. 
+While CEM CLI is no where near an ideal script, it helps me migrate/stage my sites on self-managed VPS. I plan to improve this script by adding several new routines to it. Following is a list of ideas that I have. 
 
 - [x] Download Backup
 - [x] Extract Backup
@@ -112,7 +113,7 @@ While CEM CLI is no where near an ideal script, it's helping me migrate/stage my
 - [ ] Mold it into EasyEngine's CLI instead of just a migration CLI (Thinking Out Loud)
 
 ## Disclaimer (Beta Software)
-Make sure to test this CLI on new server. It is beta and completely new. I have tested it to transfer my cPanel sites to an EasyEngine VPS (based on Ubuntu 16.04  x64) while working on a Mac. Use at your own risk 🤔.
+Make sure to test this CLI on a new server. It is beta and completely new. I have tested it to transfer my cPanel sites to an EasyEngine VPS (based on Ubuntu 16.04  x64) while working on a Mac. Use at your own risk 🤔.
 
 ## [Changelog](https://github.com/ahmadawais/cPanel-EasyEngine-Migrate-CLI/blob/master/CHANGELOG.md)
 
